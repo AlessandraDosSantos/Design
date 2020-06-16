@@ -1,9 +1,5 @@
 require(asreml)
 require(dae)
-require(parallel)
-require(doParallel)
-require(foreach)
-require(asremlPlus)
 
 ##############################################################################
 ####################   Analysis ##############################################
