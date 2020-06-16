@@ -1,9 +1,5 @@
 require(asreml)
 require(dae)
-require(parallel)
-require(doParallel)
-require(foreach)
-require(asremlPlus)
 
 ##############################################################################
 ####################   Analysis ##############################################
@@ -76,49 +72,3 @@ AnalyseDes2_04a <- fitted2simul(opDesign=des2_04,environmental=uni2)
 summary(des2_25)
 AnalyseDes2_25 <- fitted2simul(opDesign=des2_25,environmental=uni2)
 AnalyseDes2_25a <- fitted2simul(opDesign=des2_25,environmental=uni1)
-
-
-
-################# another function
-cl <- makeCluster(6)
-#registerDoParallel(cl)
-registerDoSEQ()
-anal.out.S1<- NULL
-bootsamp = 1:1000
-anal.out.S1 <- foreach(i = bootsamp, .inorder=FALSE, 
-                       .packages = c("asreml"))  %dopar%
-  {
-    cat("#### Simulation ",i,"\n")
-    Z <- model.matrix(~ -1+des2_04$New)[,-c(415)]
-    des2_04$Gen <- Z%*%genetic[,i]
-    des2_04$Y <- des2_04$Gen+uni1[,i]
-    asreml(Y ~ Check, random =~ New + Column + Row,
-           residual = ~ ar1(Column):own(Row,"banded",0.1,"R"),
-           aom=T,trace=F,data = des2_04,maxit=30,gammaPar=TRUE)
-  }
-stopCluster(cl)
-
-
-CV.S3 <- rbind(summary(anal.out.S1[[1]])$varcomp$component,
-               summary(anal.out.S1[[2]])$varcomp$component,
-               summary(anal.out.S1[[3]])$varcomp$component,
-               summary(anal.out.S1[[4]])$varcomp$component,
-               summary(anal.out.S1[[5]])$varcomp$component)
-colnames(CV.S3) <- c("sima2r", "sigma2c", "sigma2g", "sigma2", "phic", "band1r", "band2r")
-CV.S3 <- as.data.frame(CV.S3)
-
-CV.S3.df <- data.frame(
-  Amostra = rep(1:5, 7),
-  Parametro = rep(colnames(CV.S3), each = 5),
-  Estimativa = c(CV.S3[,1],
-                 CV.S3[,2],
-                 CV.S3[,3],
-                 CV.S3[,4],
-                 CV.S3[,5],
-                 CV.S3[,6],
-                 CV.S3[,7]),
-  Verdadeiro = c(rep(c(0.3,0.3,0.8,1,0.5,-0.4,0.3),
-                     each=5))
-)
-
-CV.S3.df
