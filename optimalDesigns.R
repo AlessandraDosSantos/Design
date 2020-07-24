@@ -169,14 +169,24 @@ for(i in 1:6)
 }
 Effic0
 
+####### Layout for design 0
+syst$Cplot <- fac.recode(syst$Check,c(1:5),
+                         labels=c("T","A","B","C","")) 
+designGGPlot(design = syst, labels = "Cplot",
+             row.factors = "Row", column.factors = "Column",
+             colour.values = c("lightblue","coral","yellow",
+                               "green","white"),celllinesize=0.3,
+             title="", axis.text.size = 10,title.size=10,
+             cellfillcolour.column = "Check", cellalpha = 0.5)
+
 ####### Layout for design 1
 des1_04$Cplot <- fac.recode(des1_04$Check,c(1:5),labels=c("T","A","B","C",""))
 des1_25$Cplot <- fac.recode(des1_25$Check,c(1:5),labels=c("T","A","B","C",""))
 
 designGGPlot(design = des1_25, labels = "Cplot",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c("lightblue","lightcoral","yellow",
-                               "lightgreen","white"),celllinesize=0.3,
+             colour.values = c("lightblue","coral","yellow",
+                               "green","white"),celllinesize=0.3,
              title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Check", cellalpha = 0.5)
 
@@ -196,7 +206,7 @@ des3_25$Cplot <- fac.recode(des3_25$Check,c(1:4),labels=c("A","B","C",""))
 
 designGGPlot(design = des3_04, labels = "Cplot",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c("lightcoral","yellow","lightgreen","white"),
+             colour.values = c("coral","yellow","green","white"),
              celllinesize=0.3,title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Check", cellalpha = 0.5)
 
@@ -212,7 +222,7 @@ dados <- dados[order(dados$Column,dados$Row),]
 
 designGGPlot(design = dados, labels = "label",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c(rep("orange",56),"white","lightblue","lightcoral","yellow","lightgreen"),
+             colour.values = c(rep("orange",56),"white","coral","yellow","green"),
              celllinesize=0.3,title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "label", cellalpha = 0.5)
 
@@ -222,7 +232,6 @@ des5_25$Nplot <- fac.recode(des5_25$Treat5,c(1:86,rep(87,328)),
 
 designGGPlot(design = des5_25, labels = "Nplot",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c(rep("orange",86),
-                               rep("white",328)),celllinesize=0.3,
+             colour.values = c(rep("orange",86),rep("white",328)),celllinesize=0.3,
              title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Nplot", cellalpha = 0.5)
