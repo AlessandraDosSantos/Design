@@ -169,17 +169,7 @@ for(i in 1:6)
 }
 Effic0
 
-####### Layout
-ex.mat <- matrix(des1_04$Treat,ncol=25,nrow=20)
-designPlot(ex.mat, new=TRUE, plotlabels=FALSE, plotcellboundary = TRUE, 
-           ctitle="Column", rtitle="Row", rchardivisor=2, cchardivisor=2)
-designPlot(exp.mat, new=FALSE, plotlabels=TRUE, 
-           labels=1:80, cellfillcolour= "light blue", chardivisor = 1.5)
-designPlot(exp.mat, new=FALSE, plotlabels=TRUE, 
-           labels=81:320, cellfillcolour= "white", chardivisor = 1.5)
-designPlot(exp.mat, new=FALSE, plotlabels=TRUE, 
-           labels=321:325, cellfillcolour= "yellow", chardivisor = 1.5)
-
+####### Layout for design 1
 des1_04$Cplot <- fac.recode(des1_04$Check,c(1:5),labels=c("T","A","B","C",""))
 des1_25$Cplot <- fac.recode(des1_25$Check,c(1:5),labels=c("T","A","B","C",""))
 
@@ -190,6 +180,7 @@ designGGPlot(design = des1_25, labels = "Cplot",
              title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Check", cellalpha = 0.5)
 
+####### Layout for design 2
 des2_04$Cplot <- fac.recode(des2_04$Check,c(1:2),labels=c("T",""))
 des2_25$Cplot <- fac.recode(des2_25$Check,c(1:2),labels=c("T",""))
 
@@ -199,29 +190,33 @@ designGGPlot(design = des2_04, labels = "Cplot",
              title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Check", cellalpha = 0.5)
 
+####### Layout for design 3
 des3_04$Cplot <- fac.recode(des3_04$Check,c(1:4),labels=c("A","B","C",""))
 des3_25$Cplot <- fac.recode(des3_25$Check,c(1:4),labels=c("A","B","C",""))
 
 designGGPlot(design = des3_04, labels = "Cplot",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c("lightcoral","yellow",
-                               "lightgreen","white"),celllinesize=0.3,
-             title="", axis.text.size = 10,title.size=10,
+             colour.values = c("lightcoral","yellow","lightgreen","white"),
+             celllinesize=0.3,title="", axis.text.size = 10,title.size=10,
              cellfillcolour.column = "Check", cellalpha = 0.5)
 
-des4_04$Nplot <- fac.recode(des4_04$New,c(1:57,rep(1,358)),
-                            labels=c("",1:56))
-des4_04$Cplot <- fac.recode(des4_04$Check,c(1:4),labels=c("A","B","C",""))
-des4_04$Nplot <- fac.recode(des4_04$New,c(1:57,rep(1,358)),labels=c("",1:56))
-des4_25$Cplot <- fac.recode(des4_25$Check,c(1:4),labels=c("A","B","C",""))
+####### Layout for design 4
+clones <- droplevels(subset(des4_04,des4_04$New != "T"))
+sorted_labels <- paste(sort(as.integer(levels(droplevels(clones)$New))))
+clones$label <- factor(clones$New, levels = c(sorted_labels))
+clones$label <- fac.recode(clones$label,c(1:56,rep(57,358)),labels=c(1:56,""))
+Test <- subset(des4_04,des4_04$New == "T")
+Test$label <- droplevels(Test)$Check
+dados <- rbind(clones,Test)
+dados <- dados[order(dados$Column,dados$Row),]
 
-designGGPlot(design = des4_04, labels = "New",
+designGGPlot(design = dados, labels = "label",
              row.factors = "Row", column.factors = "Column",
-             colour.values = c(rep("orange",56),rep("white",358),"lightblue"),
-             celllinesize=0.3,
-             title="", axis.text.size = 10,title.size=10,
-             cellfillcolour.column = "New", cellalpha = 0.5)
+             colour.values = c(rep("orange",56),"white","lightblue","lightcoral","yellow","lightgreen"),
+             celllinesize=0.3,title="", axis.text.size = 10,title.size=10,
+             cellfillcolour.column = "label", cellalpha = 0.5)
 
+####### Layout for design 5
 des5_25$Nplot <- fac.recode(des5_25$Treat5,c(1:86,rep(87,328)),
                             labels=c(1:86,""))
 
